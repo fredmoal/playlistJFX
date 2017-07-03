@@ -56,6 +56,8 @@ public class ControleurAjouterPlaylist {
 
         try {
             controleur.creerPlaylist(nom);
+            Alert m = new Alert(Alert.AlertType.INFORMATION,"La playlist "+nom+" a bien été créée !", ButtonType.OK);
+            m.show();
         } catch (PlaylistExistante playlistExistante) {
             Alert m = new Alert(Alert.AlertType.ERROR,"Cette playlist existe déjà dans votre collection", ButtonType.OK);
             m.show();
