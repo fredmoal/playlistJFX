@@ -1,27 +1,21 @@
 package vues.jfx;
 
 import controleur.Controleur;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import modele.Playlist;
 import vues.jfx.menu.ControleurAfficherPlaylists;
 import vues.jfx.menu.ControleurAjouterPlaylist;
+import vues.jfx.menu.ControleurAjouterTitre;
 
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.stream.Collectors;
 
 /**
  * Created by YohanBoichut on 29/06/2017.
@@ -110,10 +104,7 @@ public class ControleurMenu {
         volets.getPanes().add(ajoutPlayList);
 
         TitledPane ajoutTitre = new TitledPane("Ajouter un titre à une playlist",controleurAjouterTitre.getConteneur());
-        ajoutTitre.setOnMouseClicked(e -> {
-            controleurAjouterTitre.majPlayLists(controleur.getPlaylists());
-            controleurAjouterTitre.majTitres(controleur.getTitres());
-        });
+
         volets.getPanes().add(ajoutTitre);
 
 
@@ -133,10 +124,6 @@ public class ControleurMenu {
         }
     }
 
-    public void majPlaylists(Collection<Playlist> playlists) {
-        controleurAfficherPlaylists.majPlaylists(playlists);
-
-    }
 
 
 

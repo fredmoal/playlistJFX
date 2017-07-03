@@ -1,6 +1,7 @@
-package vues.jfx;
+package vues.jfx.menu.sousmenu;
 
 import controleur.Controleur;
+import controleur.evenements.NotificationPlaylist;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,17 +13,17 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import modele.Titre;
+import vues.jfx.ControleurVueApplicationJFX;
+import vues.jfx.menu.sousmenu.comportementLecture.ComportementLecture;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by YohanBoichut on 30/06/2017.
  */
-public class ControleurLectureTitres {
+public class ControleurLectureTitres implements NotificationPlaylist {
 
     @FXML
     VBox conteneur;
@@ -32,6 +33,24 @@ public class ControleurLectureTitres {
 
     @FXML
     Label titreAlbum;
+
+
+    Controleur controleur;
+
+
+    public Controleur getControleur() {
+        return controleur;
+    }
+
+    public void setControleur(Controleur controleur) {
+        this.controleur = controleur;
+    }
+
+    public void setComportementLecture(ComportementLecture comportementLecture) {
+        this.comportementLecture = comportementLecture;
+    }
+
+    ComportementLecture comportementLecture;
 
 
     public VBox getConteneur() {
@@ -65,9 +84,9 @@ public class ControleurLectureTitres {
         stage.setScene(getScene());
     }
 
-    public static ControleurLectureTitres getInstance(Controleur controleur) {
+    public static ControleurLectureTitres getInstance(Controleur controleur, String playlist,ComportementLecture comportementLecture) {
 
-        URL location = ControleurLectureTitres.class.getResource("/vues/jfx/Lecture.fxml");
+        URL location = ControleurLectureTitres.class.getResource("/vues/jfx/menu/sousmenu/Lecture.fxml");
         FXMLLoader fxmlLoader = new FXMLLoader(location);
         Parent root = null;
         try {
@@ -76,7 +95,13 @@ public class ControleurLectureTitres {
             e.printStackTrace();
         }
         ControleurLectureTitres vue = fxmlLoader.getController();
-        vue.setScene(new Scene(vue.getConteneur(),ControleurVueApplicationJFX.LONGUEUR,ControleurVueApplicationJFX.LARGEUR));
+        vue.setScene(new Scene(vue.getConteneur(), ControleurVueApplicationJFX.LONGUEUR,ControleurVueApplicationJFX.LARGEUR));
+        vue.majTitrePlay(playlist);
+
+        vue.setComportementLecture(comportementLecture);
+        vue.setControleur(controleur);
+        vue.majPlayList(playlist);
+        controleur.ajouterAbonnement(vue);
         return vue;
     }
 
@@ -86,10 +111,9 @@ public class ControleurLectureTitres {
     }
 
 
-    public void majTitres(List<Titre> titresRandomize) {
+    public void majTitres() {
         ObservableList<Titre> listeNomMesPlaylists = titres.getItems();
-        listeNomMesPlaylists.setAll(titresRandomize);
-
+        listeNomMesPlaylists.setAll(comportementLecture.execute(getControleur(),this.titreAlbum.getText()));
 
         titres.setCellFactory(param -> new ListCell<Titre>() {
             @Override
@@ -103,5 +127,13 @@ public class ControleurLectureTitres {
                 }
             }
         });
+    }
+
+    @Override
+    public void majPlayList(String playlist) {
+        if (playlist.equals(titreAlbum.getText())) {
+            majTitres();
+        }
+
     }
 }

@@ -1,6 +1,7 @@
-package vues.jfx;
+package vues.jfx.menu;
 
 import controleur.Controleur;
+import controleur.evenements.NotificationPlaylists;
 import controleur.exceptions.AjoutTitreAnnule;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -9,11 +10,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 import modele.Playlist;
 import modele.Titre;
+import vues.jfx.ControleurVueApplicationJFX;
 
 import java.io.IOException;
 import java.net.URL;
@@ -22,7 +23,7 @@ import java.util.Collection;
 /**
  * Created by YohanBoichut on 30/06/2017.
  */
-public class ControleurAjouterTitre {
+public class ControleurAjouterTitre implements NotificationPlaylists {
 
     @FXML
     ComboBox<Playlist> playlists;
@@ -77,9 +78,9 @@ public class ControleurAjouterTitre {
     }
 
 
-    public void majTitres(Collection<Titre> titres) {
+    public void majTitres() {
         ObservableList<Titre> titresModele = this.titres.getItems();
-        titresModele.setAll(titres);
+        titresModele.setAll(getControleur().getTitres());
         this.titres.setCellFactory(param -> new ListCell<Titre>() {
             @Override
             protected void updateItem(Titre item, boolean empty) {
@@ -170,7 +171,7 @@ public class ControleurAjouterTitre {
 
     public static ControleurAjouterTitre getInstance(Controleur controleur) {
 
-        URL location = ControleurAjouterTitre.class.getResource("/vues/jfx/AjouterTitre.fxml");
+        URL location = ControleurAjouterTitre.class.getResource("/vues/jfx/menu/AjouterTitre.fxml");
         FXMLLoader fxmlLoader = new FXMLLoader(location);
         Parent root = null;
         try {
@@ -179,11 +180,17 @@ public class ControleurAjouterTitre {
             e.printStackTrace();
         }
         ControleurAjouterTitre vue = fxmlLoader.getController();
-        vue.setScene(new Scene(vue.getConteneur(),ControleurVueApplicationJFX.LONGUEUR,ControleurVueApplicationJFX.LARGEUR));
+        vue.setScene(new Scene(vue.getConteneur(), ControleurVueApplicationJFX.LONGUEUR,ControleurVueApplicationJFX.LARGEUR));
         vue.setControleur(controleur);
+        vue.majTitres();
+        vue.majPlaylists();
+        controleur.ajouterAbonnement(vue);
         return vue;
     }
 
 
-
+    @Override
+    public void majPlaylists() {
+        majPlayLists(getControleur().getPlaylists());
+    }
 }

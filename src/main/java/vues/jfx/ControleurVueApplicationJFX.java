@@ -2,13 +2,10 @@ package vues.jfx;
 
 import controleur.Controleur;
 import javafx.stage.Stage;
-import modele.Playlist;
-import modele.Titre;
 import vues.ControleurVueApplication;
-
-import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
+import vues.jfx.menu.sousmenu.ControleurLectureTitres;
+import vues.jfx.menu.sousmenu.comportementLecture.LectureAleatoire;
+import vues.jfx.menu.sousmenu.comportementLecture.LectureClassique;
 
 /**
  * Created by YohanBoichut on 29/06/2017.
@@ -25,7 +22,7 @@ public class ControleurVueApplicationJFX implements ControleurVueApplication {
     Stage stage = new Stage();
 
 
-    ConnexionControleur connexionControleur;
+    ControleurConnexion connexionControleur;
     ControleurMenu controleurMenu;
 
     public Controleur getMonControleur() {
@@ -61,7 +58,7 @@ public class ControleurVueApplicationJFX implements ControleurVueApplication {
     @Override
     public void goToConnexion() {
         if (connexionControleur == null) {
-            connexionControleur = ConnexionControleur.getInstance(getMonControleur());
+            connexionControleur = ControleurConnexion.getInstance(getMonControleur());
         }
         connexionControleur.rendreActive(getStage());
         getStage().show();
@@ -69,41 +66,36 @@ public class ControleurVueApplicationJFX implements ControleurVueApplication {
 
 
     @Override
-    public void goToMenu(Collection<Playlist> playlists) {
+    public void goToMenu() {
         if (controleurMenu == null) {
             controleurMenu = ControleurMenu.getInstance(getMonControleur());
         }
-        controleurMenu.majPlaylists(playlists);
         controleurMenu.rendreActive(getStage());
         getStage().show();
     }
 
     @Override
-    public void setDerniereConnexion(LocalDateTime derniereConnexion) {
+    public void setDerniereConnexion() {
         if (controleurMenu == null) {
             controleurMenu = ControleurMenu.getInstance(getMonControleur());
         }
-        controleurMenu.majDerniereCo(derniereConnexion);
+        controleurMenu.majDerniereCo(getMonControleur().getDerniereCo());
     }
 
     @Override
-    public void lectureAleatoire(String playlist, List<Titre> titresRandomize) {
-        ControleurLectureTitres controleurLectureTitres = ControleurLectureTitres.getInstance(getMonControleur());
+    public void lectureAleatoire(String playlist) {
+        ControleurLectureTitres controleurLectureTitres = ControleurLectureTitres.getInstance(getMonControleur(),playlist, LectureAleatoire.getInstance());
         Stage alea =new Stage();
         alea.setTitle("Lecture aleatoire");
-        controleurLectureTitres.majTitrePlay(playlist);
-        controleurLectureTitres.majTitres(titresRandomize);
         controleurLectureTitres.rendreActive(alea);
         alea.show();
     }
 
     @Override
-    public void lectureClassique(String playlist, List<Titre> titres) {
-        ControleurLectureTitres controleurLectureTitres = ControleurLectureTitres.getInstance(getMonControleur());
+    public void lectureClassique(String playlist) {
+        ControleurLectureTitres controleurLectureTitres = ControleurLectureTitres.getInstance(getMonControleur(),playlist, LectureClassique.getInstance());
         Stage alea =new Stage();
         alea.setTitle("Lecture");
-        controleurLectureTitres.majTitrePlay(playlist);
-        controleurLectureTitres.majTitres(titres);
         controleurLectureTitres.rendreActive(alea);
         alea.show();
     }

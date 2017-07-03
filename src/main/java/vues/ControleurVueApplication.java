@@ -15,13 +15,11 @@ public interface ControleurVueApplication {
 
     void goToConnexion();
 
+    void goToMenu();
 
+    void setDerniereConnexion();
 
-    void goToMenu(Collection<Playlist> playlists);
+    void lectureAleatoire(String playlist);
 
-    void setDerniereConnexion(LocalDateTime derniereConnexion);
-
-    void lectureAleatoire(String playlist, List<Titre> titresRandomize);
-
-    void lectureClassique(String playlist, List<Titre> titres);
+    void lectureClassique(String playlist);
 }

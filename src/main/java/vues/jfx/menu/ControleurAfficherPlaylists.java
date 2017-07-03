@@ -1,6 +1,7 @@
 package vues.jfx.menu;
 
 import controleur.Controleur;
+import controleur.evenements.NotificationPlaylists;
 import controleur.exceptions.PlaylistExistante;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 /**
  * Created by YohanBoichut on 30/06/2017.
  */
-public class ControleurAfficherPlaylists {
+public class ControleurAfficherPlaylists implements NotificationPlaylists{
 
 
     @FXML
@@ -57,34 +58,24 @@ public class ControleurAfficherPlaylists {
         final ContextMenu contextMenu = new ContextMenu();
 
         MenuItem item1 = new MenuItem("Lecture aléatoire");
-        item1.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent e) {
-                for(String play : (ObservableList<String>) mesPlaylists.getSelectionModel().getSelectedItems()) {
-                    controleur.lancerLectureAleatoire(play);
+        item1.setOnAction(e -> {
+            for(String play : (ObservableList<String>) mesPlaylists.getSelectionModel().getSelectedItems()) {
+                controleur.lancerLectureAleatoire(play);
 
-                }
             }
         });
         MenuItem item2 = new MenuItem("Lecture classique");
-        item2.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent e) {
-                for(String play : (ObservableList<String>) mesPlaylists.getSelectionModel().getSelectedItems()) {
-                    controleur.lancerLectureClassique(play);
-                }
+        item2.setOnAction(e -> {
+            for(String play : (ObservableList<String>) mesPlaylists.getSelectionModel().getSelectedItems()) {
+                controleur.lancerLectureClassique(play);
             }
         });
         contextMenu.getItems().addAll(item1, item2);
         contextMenu.show(mesPlaylists,contextMenuEvent.getScreenX(),contextMenuEvent.getScreenY());
 
     }
-    public void majPlaylists(Collection<Playlist> playlists) {
 
-        ObservableList<String> listeNomMesPlaylists = mesPlaylists.getItems();
-        listeNomMesPlaylists.setAll(playlists.stream().map(e -> e.getNomListe()).collect(Collectors.toCollection(ArrayList::new)));
 
-        mesPlaylists.refresh();
-
-    }
 
     public void ajouterPlaylist(ActionEvent actionEvent) {
         String nom = this.nomPlaylist.getText();
@@ -121,6 +112,8 @@ public class ControleurAfficherPlaylists {
         }
         ControleurAfficherPlaylists vue = fxmlLoader.getController();
         vue.setControleur(controleur);
+        controleur.ajouterAbonnement(vue);
+        vue.majPlaylists();
 
         return vue;
     }
@@ -130,7 +123,13 @@ public class ControleurAfficherPlaylists {
     }
 
 
+    @Override
+    public void majPlaylists() {
+        ObservableList<String> listeNomMesPlaylists = mesPlaylists.getItems();
+        listeNomMesPlaylists.setAll(getControleur().getPlaylists().stream().map(e -> e.getNomListe()).collect(Collectors.toCollection(ArrayList::new)));
 
+        mesPlaylists.refresh();
+    }
 }
 
 

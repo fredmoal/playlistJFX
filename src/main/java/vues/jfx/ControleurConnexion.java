@@ -21,7 +21,7 @@ import java.net.URL;
 /**
  * Created by YohanBoichut on 29/06/2017.
  */
-public class ConnexionControleur {
+public class ControleurConnexion {
 
     @FXML
     TextField pseudo;
@@ -54,9 +54,9 @@ public class ConnexionControleur {
     Scene scene;
 
 
-    public static ConnexionControleur getInstance(Controleur controleur) {
+    public static ControleurConnexion getInstance(Controleur controleur) {
 
-        URL location = ConnexionControleur.class.getResource("/vues/jfx/Connexion.fxml");
+        URL location = ControleurConnexion.class.getResource("/vues/jfx/Connexion.fxml");
         FXMLLoader fxmlLoader = new FXMLLoader(location);
         Parent root = null;
         try {
@@ -64,7 +64,7 @@ public class ConnexionControleur {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ConnexionControleur vue = fxmlLoader.getController();
+        ControleurConnexion vue = fxmlLoader.getController();
         vue.setScene(new Scene(vue.getConteneur(),ControleurVueApplicationJFX.LONGUEUR,ControleurVueApplicationJFX.LARGEUR));
         vue.setControleur(controleur);
         return vue;
