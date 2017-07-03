@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox fx:id="conteneur" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vues.jfx.ControleurAjouterTitre">
+   <children>
+      <Label text="Sélectionnez une de vos playlists" />
+      <ComboBox fx:id="playlists"  prefWidth="150.0" />
+      <Label text="Sélectionnez parmi les titres proposés celui que vous voulez ajouter">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </Label>
+      <ComboBox fx:id="titres"  prefWidth="150.0" />
+      <Button mnemonicParsing="false" onAction="#enregistrerTitre" text="Confirmer" />
+   </children>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
+</VBox>
