@@ -1,9 +1,6 @@
 package application;
 
-import controleur.Controleur;
 import controleur.Controller;
-import facade.PlaylistService;
-import facade.ServiceImpl;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
