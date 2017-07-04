@@ -1,6 +1,9 @@
 package application;
 
 import controleur.Controleur;
+import controleur.Controller;
+import facade.PlaylistService;
+import facade.ServiceImpl;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -10,7 +13,9 @@ import javafx.stage.Stage;
 public class ProgrammePrincipal extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        new Controleur();
+        ServiceImpl service = new ServiceImpl();
+        Controller controller = new Controller(service, service, primaryStage);
+        controller.start();
     }
 
     public static void main(String[] args) {
