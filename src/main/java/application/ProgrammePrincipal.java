@@ -13,8 +13,7 @@ import javafx.stage.Stage;
 public class ProgrammePrincipal extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        ServiceImpl service = new ServiceImpl();
-        Controller controller = new Controller(service, service, primaryStage);
+        Controller controller = new Controller(primaryStage);
         controller.start();
     }
 
